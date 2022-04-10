@@ -1,3 +1,3 @@
 exports.emailVerification = (event, context, callback) => {
-    console.log("Hello world")
+    console.log("Testing last time")
 }
