@@ -6,7 +6,7 @@ env:
 
 on:
   push:
-    branches: [serverless]
+    branches: [main]
 
 jobs:
   run_lambda:
