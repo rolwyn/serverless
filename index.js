@@ -1,19 +1,16 @@
 const awssdk = require("aws-sdk")
 awssdk.config.update({region: 'us-east-1'})
 const documentClient = new awssdk.DynamoDB.DocumentClient()
-const crypto = require('crypto')
 const ses = new awssdk.SES()
 
 exports.emailVerification = (event, context, callback) => {
     
-    console.log("lambda function for sending email")
+    console.log("Lambda function for email notification")
     console.log(event)
 
-    let snsmessage = event.Records[0].Sns.Message
     console.log(Object.keys(event.Records[0].Sns))
     console.log(event.Records[0].Sns.MessageAttributes)
-    console.log("email is")
-    console.log(event.Records[0].Sns.MessageAttributes.emailid.Value)
+    console.log("email is: "+event.Records[0].Sns.MessageAttributes.emailid.Value)
     let emailId = event.Records[0].Sns.MessageAttributes.emailid.Value
     let tokenValue = event.Records[0].Sns.MessageAttributes.token.Value
     
@@ -34,10 +31,8 @@ exports.emailVerification = (event, context, callback) => {
     documentClient.get(getEmailListParams, (err, emaillist) => {
         if (err) console.log(err)
         else {
-            console.log("email list is --------------------->//")
-            console.log(emaillist)
-            console.log("length is --------------------->//")
-            console.log(Object.keys(emaillist).length)
+            console.log("email list is " +emaillist)
+            console.log("length is " +Object.keys(emaillist).length)
             // email not found, add email to list
             if (Object.keys(emaillist).length === 0) {
                 let emailInfoParams = {
@@ -57,7 +52,7 @@ exports.emailVerification = (event, context, callback) => {
                     Source: "noreply@"+process.env.DomainName
                 };
                 
-                console.log("reached to email")
+                console.log("Reached to ses email function")
                 ses.sendEmail(emailInfoParams, function (err, data) {
                     if (err) {
                         console.log(err)
