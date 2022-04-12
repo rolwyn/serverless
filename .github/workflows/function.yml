@@ -32,12 +32,6 @@ jobs:
         run: |
           aws s3 cp ${{ env.ARTIFACT_NAME }}.zip s3://${{ secrets.AWS_BUCKET }}/
       
-      # - name: Step 5 - Update Function
-        # aws deploy push --application-name csye6225-webapp --s3-location s3://${{ secrets.AWS_BUCKET }}/${{ env.ARTIFACT_NAME }}.zip --source /tmp/MyLocalDeploymentFolder/
-      #   run: |
-      #     aws deploy create-deployment \
-      #     --application-name csye6225-webapp \
-      #     --deployment-config-name CodeDeployDefault.AllAtOnce \
-      #     --deployment-group-name csye6225-webapp-deployment \
-      #     --file-exists-behavior OVERWRITE \
-      #     --s3-location bucket=${{ secrets.AWS_BUCKET }},key=${{ env.ARTIFACT_NAME }}.zip,bundleType=zip \
+      - name: Step 5 - Update Function
+        run: |
+          aws lambda update-function-code --function-name EmailVerification --s3-bucket ${{ secrets.AWS_BUCKET }} --s3-key ${{ env.ARTIFACT_NAME }}.zip
