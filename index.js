@@ -41,8 +41,16 @@ exports.emailVerification = (event, context, callback) => {
                     },
                     Message: {
                         Body: {
-                            Text: {
-                                Data: "http://"+process.env.DomainName+"/v1/verifyUserEmail?email="+emailId+"&token="+tokenValue
+                            Html: {
+                                Charset: "UTF-8",                 
+                                Data: `<div>
+                                <p>Hello,</p>                               
+                                <p>Thank you for registering for our services at Petz.</p>                     
+                                <p>Verify your email and enjoy full benefits</p>
+                                <p><a href=\"http://${process.env.DomainName}/v1/verifyUserEmail?email=${emailId}&token=${tokenValue}\" target=\"_blank\">Click to verify your Petz account</a></p>
+                                <p>If the link doesn't work, use a browser and paste the link: </p>
+                                <p>http://${process.env.DomainName}/v1/verifyUserEmail?email=${emailId}&token=${tokenValue}</p>
+                                </div>`
                             }
                         },
                         Subject: {
